@@ -1,0 +1,34 @@
+[build-system]
+requires = [
+    "setuptools>=75.1",
+    "wheel>=0.44",
+]
+
+[project]
+name = "wedowind_ode_benchmarker"
+version = "0.0.1"
+description = "Benchmarking of prediction methods for the WeDoWind Open Data Exploration (ODE) space"
+authors = [
+  {name="Christian Jonsson", email="christianj@kudosoftware.com"},
+]
+readme = "README.md"
+requires-python = "~=3.12"
+classifiers = [
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+packages = ["wedowind_ode_benchmarker"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.ruff]
+line-length = 88
+
+[tool.mypy]
+plugins = ["numpy.typing.mypy_plugin"]
+python_version = "3.12"
