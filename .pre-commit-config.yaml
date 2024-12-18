@@ -1,6 +1,6 @@
 default_language_version:
     python: python3.12
-default_stages: [commit, merge-commit, push]
+default_stages: [pre-commit, pre-merge-commit, pre-push]
 fail_fast: false
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
