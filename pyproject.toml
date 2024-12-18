@@ -1,7 +1,7 @@
 [build-system]
 requires = [
-    "setuptools>=75.1",
-    "wheel>=0.44",
+    "setuptools>=75.6",
+    "wheel>=0.45",
 ]
 
 [project]
@@ -19,6 +19,9 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dynamic = ["dependencies"]
+
+[project.scripts]
+wedowind_ode_benchmarker = "wedowind_ode_benchmarker.main:main"
 
 [tool.setuptools]
 packages = ["wedowind_ode_benchmarker"]
