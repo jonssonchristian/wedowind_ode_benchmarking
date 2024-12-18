@@ -41,6 +41,8 @@ repos:
         args: [--config-file=pyproject.toml]
         additional_dependencies: [
           numpy==2.2.0,
+          pandas==2.2.3,
+          pandas-stubs==2.2.3.241126,
           requests==2.32.3,
           types-requests==2.32.0.20241016,
         ]
