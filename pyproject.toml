@@ -33,5 +33,6 @@ dependencies = {file = ["requirements.txt"]}
 line-length = 88
 
 [tool.mypy]
+files = ["wedowind_ode_benchmarker"]
 plugins = ["numpy.typing.mypy_plugin"]
 python_version = "3.12"
