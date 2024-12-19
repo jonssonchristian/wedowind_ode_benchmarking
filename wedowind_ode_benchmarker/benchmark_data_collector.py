@@ -3,6 +3,7 @@
 from typing import Final
 from pathlib import Path
 import zipfile
+import logging
 
 import requests
 
@@ -55,8 +56,10 @@ def collect_file(
     """
     output_filepath = output_dirpath / filename
     if output_filepath.is_file():
+        logging.info(f"The file '{output_filepath.name}' already exists.")
         return
 
+    logging.info(f"Downloading the file '{output_filepath.name}'.")
     download_file(
         url=benchmark_datasets.get_zenodo_file_url(
             filename=filename,
@@ -68,6 +71,7 @@ def collect_file(
     if output_filepath.suffix.lower() != ".zip":
         return
 
+    logging.info(f"Unzipping the ZIP archive file '{output_filepath.name}'.")
     with zipfile.ZipFile(output_filepath, "r") as zip_ref:
         zip_ref.extractall(output_dirpath)
 
@@ -105,6 +109,8 @@ def collect_all_data(output_dirpath: Path) -> None:
     :param output_dirpath: the path of the directory to which to save
         the benchmark data files
     """
+    logging.info("Starting benchmark collection process.")
+
     output_dirpath.mkdir(parents=True, exist_ok=True)
     for dataset_specification in DATASETS:
         collect_dataset(

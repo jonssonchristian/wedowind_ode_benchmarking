@@ -36,3 +36,7 @@ line-length = 88
 files = ["wedowind_ode_benchmarker"]
 plugins = ["numpy.typing.mypy_plugin"]
 python_version = "3.12"
+
+[[tool.mypy.overrides]]
+module = ["scipy.*"]
+ignore_missing_imports = true

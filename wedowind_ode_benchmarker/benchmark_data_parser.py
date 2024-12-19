@@ -3,24 +3,34 @@
 from pathlib import Path
 from typing import Final
 import re
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 
 import numpy as np
 import pandas as pd
+
+from wedowind_ode_benchmarker.variables import (
+    DATETIME_LABEL,
+    WIND_SPEED_LABEL,
+    WIND_FROM_DIRECTION_LABEL,
+    ACTIVE_POWER_LABEL,
+    NACELLE_DIRECTION_LABEL,
+    PITCH_ANGLE_LABEL,
+    TURBINE_NUMBER_LABEL,
+)
 
 
 TURBINE_DATA_GLOB_PATTERN: Final[str] = "data/Turbine_Data*.csv"
 
 SCADA_FILE_INDEX_COLUMN: Final[str] = "# Date and time"
 
-SCADA_FILE_SELECTED_COLUMNS: Final[list[str]] = [
-    "# Date and time",
-    "Power (kW)",
-    "Wind speed (m/s)",
-    "Wind direction (°)",
-    "Nacelle position (°)",
-    "Blade angle (pitch position) A (°)",
-]
+SCADA_FILE_SELECTED_COLUMNS: Final[Mapping[str, str]] = {
+    "# Date and time": DATETIME_LABEL,
+    "Power (kW)": ACTIVE_POWER_LABEL,
+    "Wind speed (m/s)": WIND_SPEED_LABEL,
+    "Wind direction (°)": WIND_FROM_DIRECTION_LABEL,
+    "Nacelle position (°)": NACELLE_DIRECTION_LABEL,
+    "Blade angle (pitch position) A (°)": PITCH_ANGLE_LABEL,
+}
 
 TURBINE_DETAILS_FROM_FILE_PATTERN: Final[re.Pattern] = re.compile(
     pattern=r"^Turbine_Data_(\w+)_(\d+)_.*\.csv$",
@@ -55,14 +65,17 @@ def parse_wind_farm_data(wind_farm_name: str) -> pd.DataFrame:
                 index_col=SCADA_FILE_INDEX_COLUMN,
                 parse_dates=True,
                 skiprows=9,
-                usecols=SCADA_FILE_SELECTED_COLUMNS,
+                usecols=list(SCADA_FILE_SELECTED_COLUMNS.keys()),
                 dtype=np.float64,
             )
             .assign(
-                turbine_number=turbine_number,
+                **{TURBINE_NUMBER_LABEL: turbine_number},
             )
             .rename_axis(
-                index="datetime",
+                index=DATETIME_LABEL,
+            )
+            .rename(
+                columns=SCADA_FILE_SELECTED_COLUMNS,
             )
         )
 
